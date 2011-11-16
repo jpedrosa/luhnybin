@@ -77,6 +77,7 @@ def mask s
         match_start -= 1 if /\d/ =~ s[n]
         n += 1
       end
+      match_from = n + 1
       while match_len > 0
         if /\d/ =~ s[n]
           masked_s[n] = 'X'
@@ -84,7 +85,6 @@ def mask s
         end
         n += 1
       end
-      match_from = md.begin(0) + 1
     else
       match_from = md.end(0)
     end
