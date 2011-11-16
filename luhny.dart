@@ -1,4 +1,4 @@
-#!/usr/bin/env dart
+#!/usr/bin/env dart_release
 
 #import('util.dart');
 
@@ -133,11 +133,25 @@ sampleTest() {
 }
 
 tapStdin() {
+  var s;
+  var ios = new StringInputStream(stdin);
+  var lines = [];
+  while ((s = ios.readLine()) !== null) {
+    lines.add(s);
+  }
+  var args = new Options().arguments;
+  var n_repeats = args.length > 0 ? Math.parseInt(args[0]) : 1;
+  for (var i = 0; i < n_repeats; i++) {
+    for (s in lines) {
+      print(mask(s));
+    }
+  }
+  exit(0);
 }
 
 main() {
-  sampleTest();
-//  tapStdin();
+//  sampleTest();
+  tapStdin();
 }
 
 

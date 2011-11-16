@@ -2,4 +2,5 @@
 
 # Call your program here instead of cat.
 #cat
-./luhny.rb
+#./luhny.rb
+./luhny.dart
