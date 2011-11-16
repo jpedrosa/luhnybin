@@ -1,9 +1,9 @@
-#!/usr/local/bin/ruby
+#!/usr/bin/env ruby
 
 def test_it s
   a = a.is_a?(String) ? s.scan(/\d/) : s
   a = a.map{|ns| ns.to_i }
-  i = a.length - 2;
+  i = a.length - 2
   n = 0
   while i >= 0 do
     n = a[i] * 2
