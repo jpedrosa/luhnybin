@@ -31,74 +31,74 @@ testIt(s) {
 iterate(s) {
   var len = s.length;
   var result = false;
-  var match_start = 0;
-  var match_len = 0;
+  var matchStart = 0;
+  var matchLen = 0;
   if (len >= 14) {
     var n = 0;
-    var max_len = len > 16 ? 16 : len;
-    while (n + max_len - 1 < len) {
-      result = testIt(s.getRange(n, max_len));
+    var maxLen = len > 16 ? 16 : len;
+    while (n + maxLen - 1 < len) {
+      result = testIt(s.getRange(n, maxLen));
       if (result) {
-        match_start = n;
-        match_len = max_len;
+        matchStart = n;
+        matchLen = maxLen;
         break;
       }
-      if (max_len == 16) {
+      if (maxLen == 16) {
         result = testIt(s.getRange(n, 15));
         if (result) {
-          match_start = n;
-          match_len = 15;
+          matchStart = n;
+          matchLen = 15;
           break;
         }
       }
-      if (max_len == 16 || max_len == 15) {
+      if (maxLen == 16 || maxLen == 15) {
         result = testIt(s.getRange(n, 14));
         if (result) {
-          match_start = n;
-          match_len = 14;
+          matchStart = n;
+          matchLen = 14;
           break;
         }
       }
       n += 1;
-      if (max_len > 14 && n + max_len >= len) {
-        max_len -= 1;
+      if (maxLen > 14 && n + maxLen >= len) {
+        maxLen -= 1;
       }
     }
   }
-  return [result, match_start, match_len];
+  return [result, matchStart, matchLen];
 }
 
 
 mask(s) {
-  var match_from = 0;
+  var matchFrom = 0;
   var len = s.length;
   var masked = null;
   var re = Helpers.regexp(@'\d[\d\s\-]+\d');
-  var re_digit = Helpers.regexp(@'\d');
-  var re_any = Helpers.regexp(@'.');
+  var reDigit = Helpers.regexp(@'\d');
+  var reAny = Helpers.regexp(@'.');
   var md = null;
-  while (match_from < len && (md = re.firstMatch(s.substring(match_from, len))) !== null) {
-    var iterateResult = iterate(scan(md[0], re_digit));
+  while (matchFrom < len && (md = re.firstMatch(s.substring(matchFrom, len))) !== null) {
+    var iterateResult = iterate(scan(md[0], reDigit));
     var found = iterateResult[0];
-    var match_start = iterateResult[1];
-    var match_len = iterateResult[2];
+    var matchStart = iterateResult[1];
+    var matchLen = iterateResult[2];
     if (found) {
-      var n = match_from + md.start();
-      if (masked === null) masked = scan(s, re_any);
-      while (match_start > 0) {
-        if (re_digit.hasMatch(s[n])) match_start -= 1;
+      var n = matchFrom + md.start();
+      if (masked === null) masked = scan(s, reAny);
+      while (matchStart > 0) {
+        if (reDigit.hasMatch(s[n])) matchStart -= 1;
         n += 1;
       }
-      match_from = n + 1;
-      while (match_len > 0) {
-        if (re_digit.hasMatch(s[n])) {
+      matchFrom = n + 1;
+      while (matchLen > 0) {
+        if (reDigit.hasMatch(s[n])) {
           masked[n] = 'X';
-          match_len -= 1;
+          matchLen -= 1;
         }
         n += 1;
       }
     } else {
-      match_from += md.end();
+      matchFrom += md.end();
     }
   }
   return masked !== null ? Strings.concatAll(masked) : s;
@@ -140,8 +140,8 @@ tapStdin() {
     lines.add(s);
   }
   var args = new Options().arguments;
-  var n_repeats = args.length > 0 ? Math.parseInt(args[0]) : 1;
-  for (var i = 0; i < n_repeats; i++) {
+  var nRepeats = args.length > 0 ? Math.parseInt(args[0]) : 1;
+  for (var i = 0; i < nRepeats; i++) {
     for (s in lines) {
       print(mask(s));
     }
