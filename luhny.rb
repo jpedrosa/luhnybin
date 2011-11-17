@@ -4,29 +4,16 @@ DOUBLE_DIGITS = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
 DIGITS = {'0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4,
   '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9}
 
-def test_it s
-  a = a.is_a?(String) ? s.scan(/\d/) : s
-  a = a.map{|ns| ns.to_i }
-  i = a.length - 2
-  n = 0
-  while i >= 0 do
-    n = a[i] * 2
-    if n == 10
-      n = 1
-    elsif n == 12
-      n = 3
-    elsif n == 14
-      n = 5
-    elsif n == 16
-      n = 7
-    elsif n == 18
-      n = 9
-    end
-    a[i] = n
-    i -= 2
-  end
+def test_it a
+  a = a.map{|s| s.to_i }
   total = 0
-  a.each{|n| total += n }
+  doubleDigit = false
+  i = a.length - 1
+  while i >= 0
+    total += doubleDigit ? DOUBLE_DIGITS[a[i]] : a[i]
+    doubleDigit = !doubleDigit
+    i -= 1
+  end
   total % 10 == 0
 end
 
@@ -133,8 +120,8 @@ def tap_stdin
 end
 
 
-sample_test
-#tap_stdin
+#sample_test
+tap_stdin
 
 
 
