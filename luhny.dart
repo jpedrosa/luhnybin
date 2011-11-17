@@ -71,9 +71,11 @@ mask(s) {
     var mdIndex = 0;
     var matchFrom = 0;
     var mi = 0;
+    var keyDigits = null;
     var broadDigits = scan(md[0], reDigit);
     while (true) {
-      var iterateResult = iterate(broadDigits.getRange(mi, broadDigits.length - mi));
+      keyDigits = mi == 0 ? broadDigits : broadDigits.getRange(mi, broadDigits.length - mi);
+      var iterateResult = iterate(keyDigits);
       var found = iterateResult[0];
       if (found) {
         var matchStart = iterateResult[1];
