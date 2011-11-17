@@ -60,14 +60,14 @@ iterate(a) {
 }
 
 mask(s) {
-  var matchFrom = 0;
   var len = s.length;
   var masked = null;
   var re = Helpers.regexp(@'\d[\d\s\-]+\d');
   var reDigit = Helpers.regexp(@'\d');
   var broadDigits = null;
-  var broadMatches = matchFrom < len ? re.allMatches(s.substring(matchFrom, len)) : [];
+  var broadMatches = len > 0 ? re.allMatches(s) : [];
   var md = broadMatches.length > 0 ? broadMatches[0] : null;
+  var matchFrom = 0;
   while (matchFrom < len && md !== null) {
     broadDigits = scan(md[0], reDigit);
     var iterateResult = iterate(broadDigits);
