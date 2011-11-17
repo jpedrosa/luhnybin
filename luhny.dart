@@ -2,34 +2,25 @@
 
 #import('util.dart');
 
-testIt(s) {
-  var a = s is String ? scan(s, @'\d') : s;
-  a = map(a, (v) => Math.parseInt(v));
-  var i = a.length - 2;
-  var n = 0;
-  while (i >= 0) {
-    n = a[i] * 2;
-    if (n == 10) {
-      n = 1;
-    } else if (n == 12) {
-      n = 3;
-    } else if (n == 14) {
-      n = 5;
-    } else if (n == 16) {
-      n = 7;
-    } else if (n == 18) {
-      n = 9;
-    }
-    a[i] = n;
-    i -= 2;
-  }
+final DOUBLE_DIGITS = const {
+  '0': 0, '1': 2, '2': 4, '3': 6, '4': 8,
+  '5': 1, '6': 3, '7': 5, '8': 7, '9': 9};
+final DIGITS = const {
+  '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
+  '5': 5, '6': 6, '7': 7, '8': 8, '9': 9};
+
+testIt(a) {
   var total = 0;
-  for (var i in a) total += i;
+  var doubleDigit = false;
+  for (var i = a.length - 1; i >= 0; i--) {
+    total += doubleDigit ? DOUBLE_DIGITS[a[i]] : DIGITS[a[i]];
+    doubleDigit = !doubleDigit;
+  }
   return total % 10 == 0;
 }
 
-iterate(s) {
-  var len = s.length;
+iterate(a) {
+  var len = a.length;
   var result = false;
   var matchStart = 0;
   var matchLen = 0;
@@ -37,14 +28,14 @@ iterate(s) {
     var n = 0;
     var maxLen = len > 16 ? 16 : len;
     while (n + maxLen - 1 < len) {
-      result = testIt(s.getRange(n, maxLen));
+      result = testIt(a.getRange(n, maxLen));
       if (result) {
         matchStart = n;
         matchLen = maxLen;
         break;
       }
       if (maxLen == 16) {
-        result = testIt(s.getRange(n, 15));
+        result = testIt(a.getRange(n, 15));
         if (result) {
           matchStart = n;
           matchLen = 15;
@@ -52,7 +43,7 @@ iterate(s) {
         }
       }
       if (maxLen == 16 || maxLen == 15) {
-        result = testIt(s.getRange(n, 14));
+        result = testIt(a.getRange(n, 14));
         if (result) {
           matchStart = n;
           matchLen = 14;
@@ -68,37 +59,51 @@ iterate(s) {
   return [result, matchStart, matchLen];
 }
 
-
 mask(s) {
-  var matchFrom = 0;
   var len = s.length;
   var masked = null;
-  var re = Helpers.regexp(@'\d[\d\s\-]+\d');
-  var reDigit = Helpers.regexp(@'\d');
-  var reAny = Helpers.regexp(@'.');
-  var md = null;
-  while (matchFrom < len && (md = re.firstMatch(s.substring(matchFrom, len))) !== null) {
-    var iterateResult = iterate(scan(md[0], reDigit));
-    var found = iterateResult[0];
-    var matchStart = iterateResult[1];
-    var matchLen = iterateResult[2];
-    if (found) {
-      var n = matchFrom + md.start();
-      if (masked === null) masked = scan(s, reAny);
-      while (matchStart > 0) {
-        if (reDigit.hasMatch(s[n])) matchStart -= 1;
-        n += 1;
-      }
-      matchFrom = n + 1;
-      while (matchLen > 0) {
-        if (reDigit.hasMatch(s[n])) {
-          masked[n] = 'X';
-          matchLen -= 1;
+  var re = Helpers.regexp(@'\d[\d\s-]+\d');
+  var broadMatches = len > 0 ? re.allMatches(s) : [];
+  var numBroadMatches = broadMatches.length;
+  if (numBroadMatches > 0) {
+    var reDigit = Helpers.regexp(@'\d');
+    var md = broadMatches[0];
+    var mdIndex = 0;
+    var matchFrom = 0;
+    var mi = 0;
+    var broadDigits = scan(md[0], reDigit);
+    while (true) {
+      var iterateResult = iterate(broadDigits.getRange(mi, broadDigits.length - mi));
+      var found = iterateResult[0];
+      if (found) {
+        var matchStart = iterateResult[1];
+        var matchLen = iterateResult[2];
+        mi += matchStart + 1;
+        var n = matchFrom + md.start();
+        if (masked === null) masked = s.splitChars();
+        while (matchStart > 0) {
+          if (DIGITS[s[n]] !== null) matchStart -= 1;
+          n += 1;
         }
-        n += 1;
+        matchFrom = n - md.start() + 1;
+        while (matchLen > 0) {
+          if (DIGITS[s[n]] !== null) {
+            masked[n] = 'X';
+            matchLen -= 1;
+          }
+          n += 1;
+        }
+      } else {
+        mdIndex++;
+        if (mdIndex < numBroadMatches) {
+          matchFrom = 0;
+          mi = 0;
+          md = broadMatches[mdIndex];
+          broadDigits = scan(md[0], reDigit);
+        } else {
+          break;
+        }
       }
-    } else {
-      matchFrom += md.end();
     }
   }
   return masked !== null ? Strings.concatAll(masked) : s;
