@@ -65,7 +65,6 @@ mask(s) {
   var masked = null;
   var re = Helpers.regexp(@'\d[\d\s\-]+\d');
   var reDigit = Helpers.regexp(@'\d');
-  var reAny = Helpers.regexp(@'.');
   var md = re.firstMatch(s.substring(matchFrom, len));
   while (matchFrom < len && md !== null) {
     var iterateResult = iterate(scan(md[0], reDigit));
@@ -74,7 +73,7 @@ mask(s) {
     var matchLen = iterateResult[2];
     if (found) {
       var n = matchFrom + md.start();
-      if (masked === null) masked = scan(s, reAny);
+      if (masked === null) masked = s.splitChars();
       while (matchStart > 0) {
         if (DIGITS[s[n]] !== null) matchStart -= 1;
         n += 1;
