@@ -66,7 +66,7 @@ mask(s) {
   var re = Helpers.regexp(@'\d[\d\s\-]+\d');
   var reDigit = Helpers.regexp(@'\d');
   var broadDigits = null;
-  var md = re.firstMatch(s.substring(matchFrom, len));
+  var md = matchFrom < len ? re.firstMatch(s.substring(matchFrom, len)) : null;
   while (matchFrom < len && md !== null) {
     broadDigits = scan(md[0], reDigit);
     var iterateResult = iterate(broadDigits);
