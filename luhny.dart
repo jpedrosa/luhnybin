@@ -2,9 +2,7 @@
 
 #import('util.dart');
 
-final DOUBLE_DIGITS = const {
-  '0': 0, '1': 2, '2': 4, '3': 6, '4': 8,
-  '5': 1, '6': 3, '7': 5, '8': 7, '9': 9};
+final DOUBLE_DIGITS = const[0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
 final DIGITS = const {
   '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
   '5': 5, '6': 6, '7': 7, '8': 8, '9': 9};
@@ -13,7 +11,7 @@ testIt(a) {
   var total = 0;
   var doubleDigit = false;
   for (var i = a.length - 1; i >= 0; i--) {
-    total += doubleDigit ? DOUBLE_DIGITS[a[i]] : DIGITS[a[i]];
+    total += doubleDigit ? DOUBLE_DIGITS[a[i]] : a[i];
     doubleDigit = !doubleDigit;
   }
   return total % 10 == 0;
@@ -71,7 +69,7 @@ mask(s) {
     var matchFrom = 0;
     var mi = 0;
     var keyDigits = null;
-    var broadDigits = scan(md[0], reDigit);
+    var broadDigits = map(scan(md[0], reDigit), (v) => Math.parseInt(v));
     while (true) {
       keyDigits = mi == 0 ? broadDigits : broadDigits.getRange(mi, broadDigits.length - mi);
       var iterateResult = iterate(keyDigits);
@@ -100,7 +98,7 @@ mask(s) {
           matchFrom = 0;
           mi = 0;
           md = broadMatches[mdIndex];
-          broadDigits = scan(md[0], reDigit);
+          broadDigits = map(scan(md[0], reDigit), (v) => Math.parseInt(v));
         } else {
           break;
         }
