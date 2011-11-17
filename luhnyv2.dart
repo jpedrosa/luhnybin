@@ -2,22 +2,25 @@
 
 #import('util.dart');
 
-final DOUBLE_DIGITS = const [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
+final DOUBLE_DIGITS = const {
+  '0': 0, '1': 2, '2': 4, '3': 6, '4': 8,
+  '5': 1, '6': 3, '7': 5, '8': 7, '9': 9};
+final DIGITS = const {
+  '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
+  '5': 5, '6': 6, '7': 7, '8': 8, '9': 9};
 
 testIt(a) {
   var total = 0;
   var doubleDigit = false;
-  var n = 0;
   for (var i = a.length - 1; i >= 0; i--) {
-    n = Math.parseInt(a[i]);
-    total += doubleDigit ? DOUBLE_DIGITS[n] : n;
+    total += doubleDigit ? DOUBLE_DIGITS[a[i]] : DIGITS[a[i]];
     doubleDigit = !doubleDigit;
   }
   return total % 10 == 0;
 }
 
-iterate(s) {
-  var len = s.length;
+iterate(a) {
+  var len = a.length;
   var result = false;
   var matchStart = 0;
   var matchLen = 0;
@@ -25,14 +28,14 @@ iterate(s) {
     var n = 0;
     var maxLen = len > 16 ? 16 : len;
     while (n + maxLen - 1 < len) {
-      result = testIt(s.getRange(n, maxLen));
+      result = testIt(a.getRange(n, maxLen));
       if (result) {
         matchStart = n;
         matchLen = maxLen;
         break;
       }
       if (maxLen == 16) {
-        result = testIt(s.getRange(n, 15));
+        result = testIt(a.getRange(n, 15));
         if (result) {
           matchStart = n;
           matchLen = 15;
@@ -40,7 +43,7 @@ iterate(s) {
         }
       }
       if (maxLen == 16 || maxLen == 15) {
-        result = testIt(s.getRange(n, 14));
+        result = testIt(a.getRange(n, 14));
         if (result) {
           matchStart = n;
           matchLen = 14;
@@ -56,7 +59,6 @@ iterate(s) {
   return [result, matchStart, matchLen];
 }
 
-
 mask(s) {
   var matchFrom = 0;
   var len = s.length;
@@ -64,8 +66,8 @@ mask(s) {
   var re = Helpers.regexp(@'\d[\d\s\-]+\d');
   var reDigit = Helpers.regexp(@'\d');
   var reAny = Helpers.regexp(@'.');
-  var md = null;
-  while (matchFrom < len && (md = re.firstMatch(s.substring(matchFrom, len))) !== null) {
+  var md = re.firstMatch(s.substring(matchFrom, len));
+  while (matchFrom < len && md !== null) {
     var iterateResult = iterate(scan(md[0], reDigit));
     var found = iterateResult[0];
     var matchStart = iterateResult[1];
@@ -87,6 +89,9 @@ mask(s) {
       }
     } else {
       matchFrom += md.end();
+    }
+    if (matchFrom < len) {
+      md = re.firstMatch(s.substring(matchFrom, len));
     }
   }
   return masked !== null ? Strings.concatAll(masked) : s;
