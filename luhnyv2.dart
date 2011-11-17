@@ -66,34 +66,39 @@ mask(s) {
   var reDigit = Helpers.regexp(@'\d');
   var broadDigits = null;
   var broadMatches = len > 0 ? re.allMatches(s) : [];
-  var md = broadMatches.length > 0 ? broadMatches[0] : null;
-  var matchFrom = 0;
-  while (matchFrom < len && md !== null) {
-    broadDigits = scan(md[0], reDigit);
-    var iterateResult = iterate(broadDigits);
-    var found = iterateResult[0];
-    var matchStart = iterateResult[1];
-    var matchLen = iterateResult[2];
-    if (found) {
-      var n = matchFrom + md.start();
-      if (masked === null) masked = s.splitChars();
-      while (matchStart > 0) {
-        if (DIGITS[s[n]] !== null) matchStart -= 1;
-        n += 1;
-      }
-      matchFrom = n + 1;
-      while (matchLen > 0) {
-        if (DIGITS[s[n]] !== null) {
-          masked[n] = 'X';
-          matchLen -= 1;
+  if (broadMatches.length > 0) {
+    var md = broadMatches[0];
+    var matchFrom = 0;
+    var mIndex = 0;
+    var mString = md[0];
+    var mLen = mString.length;
+    while (matchFrom < len && md !== null) {
+      broadDigits = scan(md[0], reDigit);
+      var iterateResult = iterate(broadDigits);
+      var found = iterateResult[0];
+      var matchStart = iterateResult[1];
+      var matchLen = iterateResult[2];
+      if (found) {
+        var n = matchFrom + md.start();
+        if (masked === null) masked = s.splitChars();
+        while (matchStart > 0) {
+          if (DIGITS[s[n]] !== null) matchStart -= 1;
+          n += 1;
         }
-        n += 1;
+        matchFrom = n + 1;
+        while (matchLen > 0) {
+          if (DIGITS[s[n]] !== null) {
+            masked[n] = 'X';
+            matchLen -= 1;
+          }
+          n += 1;
+        }
+      } else {
+        matchFrom += md.end();
       }
-    } else {
-      matchFrom += md.end();
-    }
-    if (matchFrom < len) {
-      md = re.firstMatch(s.substring(matchFrom, len));
+      if (matchFrom < len) {
+        md = re.firstMatch(s.substring(matchFrom, len));
+      }
     }
   }
   return masked !== null ? Strings.concatAll(masked) : s;
