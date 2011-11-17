@@ -1,9 +1,5 @@
 #!/usr/bin/env ruby
 
-DOUBLE_DIGITS = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
-DIGITS = {'0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4,
-  '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9}
-
 def test_it s
   a = a.is_a?(String) ? s.scan(/\d/) : s
   a = a.map{|ns| ns.to_i }
@@ -97,10 +93,10 @@ def mask s
 end
 
 def sample_test
-[ '56613959932537',
+[ #'56613959932537',
 #  '508733740140655',
 #  '6853371389452376',
-#  '49536290423965',
+  '49536290423965',
 #  '306903975081421',
 #  '6045055735309820',
 #  '5872120460121',
@@ -122,19 +118,15 @@ def sample_test
 end
 end
 
-def tap_stdin
-  n_repeats = ARGV[0] ? ARGV[0].to_i : 1
-  lines = STDIN.readlines
-  n_repeats.times do
-    lines.each do |s|
-      puts mask(s)
-    end
+#sample_test
+
+n_repeats = ARGV[0] ? ARGV[0].to_i : 1
+lines = STDIN.readlines
+n_repeats.times do
+  lines.each do |s|
+    puts mask(s)
   end
 end
-
-
-sample_test
-#tap_stdin
 
 
 
