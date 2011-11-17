@@ -60,10 +60,9 @@ iterate(a) {
 }
 
 mask(s) {
-  var len = s.length;
   var masked = null;
   var re = Helpers.regexp(@'\d[\d\s-]+\d');
-  var broadMatches = len > 0 ? re.allMatches(s) : [];
+  var broadMatches = s.length > 0 ? re.allMatches(s) : [];
   var numBroadMatches = broadMatches.length;
   if (numBroadMatches > 0) {
     var reDigit = Helpers.regexp(@'\d');
