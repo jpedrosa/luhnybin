@@ -76,12 +76,12 @@ mask(s) {
       var n = matchFrom + md.start();
       if (masked === null) masked = scan(s, reAny);
       while (matchStart > 0) {
-        if (reDigit.hasMatch(s[n])) matchStart -= 1;
+        if (DIGITS[s[n]] !== null) matchStart -= 1;
         n += 1;
       }
       matchFrom = n + 1;
       while (matchLen > 0) {
-        if (reDigit.hasMatch(s[n])) {
+        if (DIGITS[s[n]] !== null) {
           masked[n] = 'X';
           matchLen -= 1;
         }
