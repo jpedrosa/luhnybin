@@ -55,32 +55,60 @@ def iterate s
   [result, match_start, match_len]
 end
 
+def all_matches s, re
+  a = []
+  i = 0
+  while m = s.match(re, i)
+    a << m
+    i = m.end(0)
+  end
+  a
+end
+
 def mask s
-  match_from = 0
-  len = s.length
-  masked_s = nil
-  while match_from < len and md = s.match(/\d[\d\s\-]+\d/, match_from)
-    found, match_start, match_len = iterate(md[0].scan(/\d/))
-    if found
-      masked_s = s[0..-1] if not masked_s
-      n = md.begin(0)
-      while match_start > 0
-        match_start -= 1 if /\d/ =~ s[n]
-        n += 1
-      end
-      match_from = n + 1
-      while match_len > 0
-        if /\d/ =~ s[n]
-          masked_s[n] = 'X'
-          match_len -= 1 
+  masked = nil
+  broadMatches = s.length > 0 ? all_matches(s, /\d[\d\s-]+\d/) : []
+  numBroadMatches = broadMatches.length
+  if numBroadMatches > 0
+    md = broadMatches[0]
+    mdIndex = 0
+    matchFrom = 0
+    mi = 0
+    keyDigits = nil
+    broadDigits = md[0].scan(/\d/).map{|v| v.to_i }
+    while true
+      keyDigits = mi == 0 ? broadDigits : broadDigits[mi...broadDigits.length]
+      found, matchStart, matchLen = iterate(keyDigits)
+      if found
+        mi += matchStart + 1
+        n = matchFrom + md.begin(0)
+        masked = s[0..-1] if not masked
+        while matchStart > 0
+          matchStart -= 1 if DIGITS[s[n]]
+          n += 1
         end
-        n += 1
+        matchFrom = n - md.begin(0) + 1
+        while matchLen > 0
+          if DIGITS[s[n]]
+            masked[n] = 'X'
+            matchLen -= 1
+          end
+          n += 1
+        end
+      else
+        mdIndex += 1
+        if mdIndex < numBroadMatches
+          matchFrom = 0
+          mi = 0
+          md = broadMatches[mdIndex]
+          broadDigits = md[0].scan(/\d/).map{|v| v.to_i }
+        else 
+          break
+        end
       end
-    else
-      match_from = md.end(0)
     end
   end
-  masked_s || s
+  masked || s
 end
 
 def sample_test
