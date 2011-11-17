@@ -63,10 +63,10 @@ mask(s) {
   var len = s.length;
   var masked = null;
   var re = Helpers.regexp(@'\d[\d\s\-]+\d');
-  var reDigit = Helpers.regexp(@'\d');
-  var broadDigits = null;
   var broadMatches = len > 0 ? re.allMatches(s) : [];
   if (broadMatches.length > 0) {
+    var reDigit = Helpers.regexp(@'\d');
+    var broadDigits = null;
     var md = broadMatches[0];
     var matchFrom = 0;
     var mIndex = 0;
