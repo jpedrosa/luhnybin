@@ -62,7 +62,7 @@ iterate(a) {
 mask(s) {
   var len = s.length;
   var masked = null;
-  var re = Helpers.regexp(@'\d[\d\s\-]+\d');
+  var re = Helpers.regexp(@'\d[\d\s-]+\d');
   var broadMatches = len > 0 ? re.allMatches(s) : [];
   var numBroadMatches = broadMatches.length;
   if (numBroadMatches > 0) {
@@ -75,9 +75,9 @@ mask(s) {
     while (true) {
       var iterateResult = iterate(broadDigits.getRange(mi, broadDigits.length - mi));
       var found = iterateResult[0];
-      var matchStart = iterateResult[1];
-      var matchLen = iterateResult[2];
       if (found) {
+        var matchStart = iterateResult[1];
+        var matchLen = iterateResult[2];
         mi += matchStart + 1;
         var n = matchFrom + md.start();
         if (masked === null) masked = s.splitChars();
