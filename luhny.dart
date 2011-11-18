@@ -48,9 +48,9 @@ iterate(a) {
           break;
         }
       }
-      n++;
+      n += 1;
       if (maxLen > 14 && n + maxLen >= len) {
-        maxLen--;
+        maxLen -= 1;
       }
     }
   }
@@ -79,21 +79,21 @@ mask(s) {
         var matchLen = iterateResult[2];
         mi += matchStart + 1;
         var n = matchFrom + md.start();
-        if (masked === null) masked = s.splitChars();
+        if (masked === null) { masked = s.splitChars(); }
         while (matchStart > 0) {
-          if (DIGITS[s[n]] !== null) matchStart--;
-          n++;
+          if (DIGITS[s[n]] !== null) { matchStart -= 1; }
+          n += 1;
         }
         matchFrom = n - md.start() + 1;
         while (matchLen > 0) {
           if (DIGITS[s[n]] !== null) {
             masked[n] = 'X';
-            matchLen--;
+            matchLen -= 1;
           }
-          n++;
+          n += 1;
         }
       } else {
-        mdIndex++;
+        mdIndex += 1;
         if (mdIndex < numBroadMatches) {
           matchFrom = 0;
           mi = 0;
