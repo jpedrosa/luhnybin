@@ -2,7 +2,7 @@
 
 #import('util.dart');
 
-final DOUBLE_DIGITS = const[0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
+final DOUBLE_DIGITS = const [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
 final DIGITS = const {
   '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
   '5': 5, '6': 6, '7': 7, '8': 8, '9': 9};
@@ -48,9 +48,9 @@ iterate(a) {
           break;
         }
       }
-      n += 1;
+      n++;
       if (maxLen > 14 && n + maxLen >= len) {
-        maxLen -= 1;
+        maxLen--;
       }
     }
   }
@@ -81,16 +81,16 @@ mask(s) {
         var n = matchFrom + md.start();
         if (masked === null) masked = s.splitChars();
         while (matchStart > 0) {
-          if (DIGITS[s[n]] !== null) matchStart -= 1;
-          n += 1;
+          if (DIGITS[s[n]] !== null) matchStart--;
+          n++;
         }
         matchFrom = n - md.start() + 1;
         while (matchLen > 0) {
           if (DIGITS[s[n]] !== null) {
             masked[n] = 'X';
-            matchLen -= 1;
+            matchLen--;
           }
-          n += 1;
+          n++;
         }
       } else {
         mdIndex++;
