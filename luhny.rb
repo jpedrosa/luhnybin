@@ -16,13 +16,13 @@ def test_it a, startAt, maxLen
   total % 10 == 0
 end
 
-def iterate s
+def iterate s, startAt
   len = s.length
   result = false
   match_start = 0
   match_len = 0
-  if len >= 14
-    n = 0
+  if len - startAt >= 14
+    n = startAt
     max_len = len > 16 ? 16 : len
     while n + max_len - 1 < len do
       result = test_it(s, n, max_len)
@@ -51,7 +51,7 @@ def iterate s
       max_len -= 1 if max_len > 14 and n + max_len >= len
     end
   end
-  [result, match_start, match_len]
+  [result, match_start - startAt, match_len]
 end
 
 def all_matches s, re
@@ -73,11 +73,9 @@ def mask s
     mdIndex = 0
     matchFrom = 0
     mi = 0
-    keyDigits = nil
     broadDigits = md[0].scan(/\d/).map{|v| v.to_i }
     while true
-      keyDigits = mi == 0 ? broadDigits : broadDigits[mi...broadDigits.length]
-      found, matchStart, matchLen = iterate(keyDigits)
+      found, matchStart, matchLen = iterate(broadDigits, mi)
       if found
         mi += matchStart + 1
         n = matchFrom + md.begin(0)
