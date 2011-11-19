@@ -115,6 +115,41 @@ class Luhn
     masked || s
   end
 
+  # A simpler implementation of mask with gsub, with fewer variables to juggle with.
+  def mask_with_gsub s
+    s.gsub(/\d[\d\s-]+\d/) do |broad_match|
+      masked = nil
+      match_from = 0
+      mi = 0
+      broad_digits = broad_match.scan(/\d/).map{|v| v.to_i }
+      next broad_match if broad_digits.length < 14
+      while true
+        found, match_start, match_len = iterate(broad_digits, mi)
+        if found
+          mi += match_start + 1
+          n = match_from
+          masked = broad_match[0..-1] if not masked
+          while match_start > 0
+            match_start -= 1 if DIGITS[broad_match[n]]
+            n += 1
+          end
+          match_from = -1
+          while match_len > 0
+            if DIGITS[broad_match[n]]
+              match_from = n + 1 if match_from < 0
+              masked[n] = 'X'
+              match_len -= 1
+            end
+            n += 1
+          end
+        else
+          break
+        end
+      end
+      masked || broad_match
+    end
+  end
+
   def tap_stdin
     n_repeats = ARGV[0] ? ARGV[0].to_i : 1
     lines = STDIN.readlines
