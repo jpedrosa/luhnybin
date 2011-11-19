@@ -22,9 +22,10 @@ iterate(a, startAt) {
   var found = false;
   var matchStart = 0;
   var matchLen = 0;
-  if (len - startAt >= 14) {
+  var maxLen = len - startAt;
+  if (maxLen >= 14) {
     var n = startAt;
-    var maxLen = len > 16 ? 16 : len;
+    maxLen = maxLen > 16 ? 16 : maxLen;
     while (n + maxLen - 1 < len) {
       found = testIt(a, n, maxLen);
       if (found) {
@@ -82,9 +83,12 @@ mask(s) {
           if (DIGITS[s[n]] !== null) { matchStart -= 1; }
           n += 1;
         }
-        matchFrom = n - md.start() + 1;
+        matchFrom = -1;
         while (matchLen > 0) {
           if (DIGITS[s[n]] !== null) {
+            if (matchFrom < 0) {
+              matchFrom = n - md.start() + 1;
+            }
             masked[n] = 'X';
             matchLen -= 1;
           }
