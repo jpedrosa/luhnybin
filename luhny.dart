@@ -2,7 +2,7 @@
 
 #import('luhn.dart');
 
-sampleTest() {
+void sampleTest() {
   var samples = [
     '56613959932537',
     '508733740140655',
@@ -30,7 +30,7 @@ sampleTest() {
   }
 }
 
-main() {
+void main() {
 //  sampleTest();
   new Luhn().tapStdin();
 }

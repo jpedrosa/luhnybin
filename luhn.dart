@@ -10,7 +10,7 @@ class Luhn {
   
   Luhn() : C_0 = '0'.charCodeAt(0), C_9 = '9'.charCodeAt(0);
 
-  testIt(a, startAt, maxLen) {
+  bool testIt(List a, num startAt, num maxLen) {
     var total = 0;
     var doubleDigit = false;
     for (var i = startAt + maxLen - 1; i >= startAt; i--) {
@@ -20,7 +20,7 @@ class Luhn {
     return total % 10 == 0;
   }
 
-  iterate(a, startAt) {
+  List iterate(List a, num startAt) {
     var len = a.length;
     var found = false;
     var matchStart = 0;
@@ -61,7 +61,7 @@ class Luhn {
     return [found, matchStart - startAt, matchLen];
   }
 
-  mask(s) {
+  String mask(String s) {
     var masked = null;
     var re = Helpers.regexp(@'\d[\d\s-]+\d');
     var broadMatches = s.length > 0 ? re.allMatches(s) : [];
@@ -75,7 +75,7 @@ class Luhn {
       var mi = 0;
       var broadDigits = map(scan(md[0], reDigit), (v) => Math.parseInt(v));
       while (true) {
-       var iterateResult = iterate(broadDigits, mi);
+        var iterateResult = iterate(broadDigits, mi);
         var found = iterateResult[0];
         if (found) {
           var matchStart = iterateResult[1];
@@ -117,7 +117,7 @@ class Luhn {
     return masked !== null ? Strings.concatAll(masked) : s;
   }
 
-  tapStdin() {
+  void tapStdin() {
     var s;
     var ios = new StringInputStream(stdin);
     var lines = [];
