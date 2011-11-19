@@ -3,9 +3,9 @@
 #import('util.dart');
 
 final DOUBLE_DIGITS = const [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
-final DIGITS = const {
-  '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
-  '5': 5, '6': 6, '7': 7, '8': 8, '9': 9};
+var C_0;
+var C_9;
+
 
 testIt(a, startAt, maxLen) {
   var total = 0;
@@ -81,12 +81,14 @@ mask(s) {
         var n = matchFrom + mdStartAt;
         if (masked === null) { masked = s.splitChars(); }
         while (matchStart > 0) {
-          if (DIGITS[s[n]] !== null) { matchStart -= 1; }
+          var c = s.charCodeAt(n);
+          if (c >= C_0 && c <= C_9) { matchStart -= 1; }
           n += 1;
         }
         matchFrom = -1;
         while (matchLen > 0) {
-          if (DIGITS[s[n]] !== null) {
+          var c = s.charCodeAt(n);
+          if (c >= C_0 && c <= C_9) {
             if (matchFrom < 0) {
               matchFrom = n - mdStartAt + 1;
             }
@@ -158,6 +160,9 @@ tapStdin() {
 }
 
 main() {
+  C_0 = '0'.charCodeAt(0);
+  C_9 = '9'.charCodeAt(0);
+
 //  sampleTest();
   tapStdin();
 }
