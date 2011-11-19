@@ -66,6 +66,7 @@ mask(s) {
   if (numBroadMatches > 0) {
     var reDigit = Helpers.regexp(@'\d');
     var md = broadMatches[0];
+    var mdStartAt = md.start();
     var mdIndex = 0;
     var matchFrom = 0;
     var mi = 0;
@@ -77,7 +78,7 @@ mask(s) {
         var matchStart = iterateResult[1];
         var matchLen = iterateResult[2];
         mi += matchStart + 1;
-        var n = matchFrom + md.start();
+        var n = matchFrom + mdStartAt;
         if (masked === null) { masked = s.splitChars(); }
         while (matchStart > 0) {
           if (DIGITS[s[n]] !== null) { matchStart -= 1; }
@@ -87,7 +88,7 @@ mask(s) {
         while (matchLen > 0) {
           if (DIGITS[s[n]] !== null) {
             if (matchFrom < 0) {
-              matchFrom = n - md.start() + 1;
+              matchFrom = n - mdStartAt + 1;
             }
             masked[n] = 'X';
             matchLen -= 1;
@@ -100,6 +101,7 @@ mask(s) {
           matchFrom = 0;
           mi = 0;
           md = broadMatches[mdIndex];
+          mdStartAt = md.start();
           broadDigits = map(scan(md[0], reDigit), (v) => Math.parseInt(v));
         } else {
           break;

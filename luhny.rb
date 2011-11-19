@@ -71,6 +71,7 @@ def mask s
   numbroad_matches = broad_matches.length
   if numbroad_matches > 0
     md = broad_matches[0]
+    md_start_at = md.begin(0)
     md_index = 0
     match_from = 0
     mi = 0
@@ -79,7 +80,7 @@ def mask s
       found, match_start, match_len = iterate(broad_digits, mi)
       if found
         mi += match_start + 1
-        n = match_from + md.begin(0)
+        n = match_from + md_start_at
         masked = s[0..-1] if not masked
         while match_start > 0
           match_start -= 1 if DIGITS[s[n]]
@@ -88,7 +89,7 @@ def mask s
         match_from = -1
         while match_len > 0
           if DIGITS[s[n]]
-            match_from = n - md.begin(0) + 1 if match_from < 0
+            match_from = n - md_start_at + 1 if match_from < 0
             masked[n] = 'X'
             match_len -= 1
           end
@@ -100,6 +101,7 @@ def mask s
           match_from = 0
           mi = 0
           md = broad_matches[md_index]
+          md_start_at = md.begin(0)
           broad_digits = md[0].scan(/\d/).map{|v| v.to_i }
         else 
           break
