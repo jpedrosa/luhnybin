@@ -68,8 +68,8 @@ end
 def mask s
   masked = nil
   broad_matches = s.length > 0 ? all_matches(s, /\d[\d\s-]+\d/) : []
-  numbroad_matches = broad_matches.length
-  if numbroad_matches > 0
+  num_broad_matches = broad_matches.length
+  if num_broad_matches > 0
     md = broad_matches[0]
     md_start_at = md.begin(0)
     md_index = 0
@@ -97,7 +97,7 @@ def mask s
         end
       else
         md_index += 1
-        if md_index < numbroad_matches
+        if md_index < num_broad_matches
           match_from = 0
           mi = 0
           md = broad_matches[md_index]
