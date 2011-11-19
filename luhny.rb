@@ -21,9 +21,10 @@ def iterate s, startAt
   found = false
   match_start = 0
   match_len = 0
-  if len - startAt >= 14
+  max_len = len - startAt
+  if max_len >= 14
     n = startAt
-    max_len = len > 16 ? 16 : len
+    max_len = max_len > 16 ? 16 : max_len
     while n + max_len - 1 < len do
       found = test_it(s, n, max_len)
       if found
@@ -84,9 +85,10 @@ def mask s
           matchStart -= 1 if DIGITS[s[n]]
           n += 1
         end
-        matchFrom = n - md.begin(0) + 1
+        matchFrom = -1
         while matchLen > 0
           if DIGITS[s[n]]
+            matchFrom = n - md.begin(0) + 1 if matchFrom < 0
             masked[n] = 'X'
             matchLen -= 1
           end
