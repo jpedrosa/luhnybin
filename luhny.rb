@@ -39,7 +39,7 @@ def iterate s, startAt
           break
         end
       end
-      if max_len == 16 or max_len == 15
+      if max_len != 14
         found = test_it(s, n, 14)
         if found
           match_start = n

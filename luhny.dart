@@ -40,7 +40,7 @@ iterate(a, startAt) {
           break;
         }
       }
-      if (maxLen == 16 || maxLen == 15) {
+      if (maxLen != 14) {
         found = testIt(a, n, 14);
         if (found) {
           matchStart = n;
