@@ -4,17 +4,17 @@ While Dart is pretty new, I've grown fond of it as well.
 
 Running the Dart and Ruby versions side by side on my machine provides these numbers:
 
-  $ time ./luhny.dart 100 < sample.txt > /dev/null 
+    $ time ./luhny.dart 100 < sample.txt > /dev/null 
 
-  real	0m6.118s
-  user	0m6.016s
-  sys	0m0.064s
+    real	0m6.118s
+    user	0m6.016s
+    sys	0m0.064s
 
-  $ time ./luhny.rb 100 < sample.txt > /dev/null 
+    $ time ./luhny.rb 100 < sample.txt > /dev/null 
 
-  real	0m6.994s
-  user	0m6.920s
-  sys	0m0.028s
+    real	0m6.994s
+    user	0m6.920s
+    sys	0m0.028s
 
 Until the latest changes, Ruby was ahead in performance.
 
