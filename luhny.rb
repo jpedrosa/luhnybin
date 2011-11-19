@@ -4,26 +4,26 @@ DOUBLE_DIGITS = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
 DIGITS = {'0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4,
   '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9}
 
-def test_it a, startAt, maxLen
+def test_it a, start_at, max_len
   total = 0
-  doubleDigit = false
-  i = startAt + maxLen - 1
-  while i >= startAt
-    total += doubleDigit ? DOUBLE_DIGITS[a[i]] : a[i]
-    doubleDigit = !doubleDigit
+  double_digit = false
+  i = start_at + max_len - 1
+  while i >= start_at
+    total += double_digit ? DOUBLE_DIGITS[a[i]] : a[i]
+    double_digit = !double_digit
     i -= 1
   end
   total % 10 == 0
 end
 
-def iterate s, startAt
+def iterate s, start_at
   len = s.length
   found = false
   match_start = 0
   match_len = 0
-  max_len = len - startAt
+  max_len = len - start_at
   if max_len >= 14
-    n = startAt
+    n = start_at
     max_len = max_len > 16 ? 16 : max_len
     while n + max_len - 1 < len do
       found = test_it(s, n, max_len)
@@ -52,7 +52,7 @@ def iterate s, startAt
       max_len -= 1 if max_len > 14 and n + max_len >= len
     end
   end
-  [found, match_start - startAt, match_len]
+  [found, match_start - start_at, match_len]
 end
 
 def all_matches s, re
@@ -67,40 +67,40 @@ end
 
 def mask s
   masked = nil
-  broadMatches = s.length > 0 ? all_matches(s, /\d[\d\s-]+\d/) : []
-  numBroadMatches = broadMatches.length
-  if numBroadMatches > 0
-    md = broadMatches[0]
-    mdIndex = 0
-    matchFrom = 0
+  broad_matches = s.length > 0 ? all_matches(s, /\d[\d\s-]+\d/) : []
+  numbroad_matches = broad_matches.length
+  if numbroad_matches > 0
+    md = broad_matches[0]
+    md_index = 0
+    match_from = 0
     mi = 0
-    broadDigits = md[0].scan(/\d/).map{|v| v.to_i }
+    broad_digits = md[0].scan(/\d/).map{|v| v.to_i }
     while true
-      found, matchStart, matchLen = iterate(broadDigits, mi)
+      found, match_start, match_len = iterate(broad_digits, mi)
       if found
-        mi += matchStart + 1
-        n = matchFrom + md.begin(0)
+        mi += match_start + 1
+        n = match_from + md.begin(0)
         masked = s[0..-1] if not masked
-        while matchStart > 0
-          matchStart -= 1 if DIGITS[s[n]]
+        while match_start > 0
+          match_start -= 1 if DIGITS[s[n]]
           n += 1
         end
-        matchFrom = -1
-        while matchLen > 0
+        match_from = -1
+        while match_len > 0
           if DIGITS[s[n]]
-            matchFrom = n - md.begin(0) + 1 if matchFrom < 0
+            match_from = n - md.begin(0) + 1 if match_from < 0
             masked[n] = 'X'
-            matchLen -= 1
+            match_len -= 1
           end
           n += 1
         end
       else
-        mdIndex += 1
-        if mdIndex < numBroadMatches
-          matchFrom = 0
+        md_index += 1
+        if md_index < numbroad_matches
+          match_from = 0
           mi = 0
-          md = broadMatches[mdIndex]
-          broadDigits = md[0].scan(/\d/).map{|v| v.to_i }
+          md = broad_matches[md_index]
+          broad_digits = md[0].scan(/\d/).map{|v| v.to_i }
         else 
           break
         end
