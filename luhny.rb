@@ -4,12 +4,11 @@ DOUBLE_DIGITS = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]
 DIGITS = {'0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4,
   '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9}
 
-def test_it a
-  a = a.map{|s| s.to_i }
+def test_it a, startAt, maxLen
   total = 0
   doubleDigit = false
-  i = a.length - 1
-  while i >= 0
+  i = startAt + maxLen - 1
+  while i >= startAt
     total += doubleDigit ? DOUBLE_DIGITS[a[i]] : a[i]
     doubleDigit = !doubleDigit
     i -= 1
@@ -26,14 +25,14 @@ def iterate s
     n = 0
     max_len = len > 16 ? 16 : len
     while n + max_len - 1 < len do
-      result = test_it(s[n...n + max_len])
+      result = test_it(s, n, max_len)
       if result
         match_start = n
         match_len = max_len
         break
       end
       if max_len == 16
-        result = test_it(s[n...n + 15])
+        result = test_it(s, n, 15)
         if result
           match_start = n
           match_len = 15
@@ -41,7 +40,7 @@ def iterate s
         end
       end
       if max_len == 16 or max_len == 15
-        result = test_it(s[n...n + 14])
+        result = test_it(s, n, 14)
         if result
           match_start = n
           match_len = 14
