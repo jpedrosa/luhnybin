@@ -19,30 +19,30 @@ testIt(a, startAt, maxLen) {
 
 iterate(a, startAt) {
   var len = a.length;
-  var result = false;
+  var found = false;
   var matchStart = 0;
   var matchLen = 0;
   if (len - startAt >= 14) {
     var n = startAt;
     var maxLen = len > 16 ? 16 : len;
     while (n + maxLen - 1 < len) {
-      result = testIt(a, n, maxLen);
-      if (result) {
+      found = testIt(a, n, maxLen);
+      if (found) {
         matchStart = n;
         matchLen = maxLen;
         break;
       }
       if (maxLen == 16) {
-        result = testIt(a, n, 15);
-        if (result) {
+        found = testIt(a, n, 15);
+        if (found) {
           matchStart = n;
           matchLen = 15;
           break;
         }
       }
       if (maxLen == 16 || maxLen == 15) {
-        result = testIt(a, n, 14);
-        if (result) {
+        found = testIt(a, n, 14);
+        if (found) {
           matchStart = n;
           matchLen = 14;
           break;
@@ -54,7 +54,7 @@ iterate(a, startAt) {
       }
     }
   }
-  return [result, matchStart - startAt, matchLen];
+  return [found, matchStart - startAt, matchLen];
 }
 
 mask(s) {

@@ -18,30 +18,30 @@ end
 
 def iterate s, startAt
   len = s.length
-  result = false
+  found = false
   match_start = 0
   match_len = 0
   if len - startAt >= 14
     n = startAt
     max_len = len > 16 ? 16 : len
     while n + max_len - 1 < len do
-      result = test_it(s, n, max_len)
-      if result
+      found = test_it(s, n, max_len)
+      if found
         match_start = n
         match_len = max_len
         break
       end
       if max_len == 16
-        result = test_it(s, n, 15)
-        if result
+        found = test_it(s, n, 15)
+        if found
           match_start = n
           match_len = 15
           break
         end
       end
       if max_len == 16 or max_len == 15
-        result = test_it(s, n, 14)
-        if result
+        found = test_it(s, n, 14)
+        if found
           match_start = n
           match_len = 14
           break
@@ -51,7 +51,7 @@ def iterate s, startAt
       max_len -= 1 if max_len > 14 and n + max_len >= len
     end
   end
-  [result, match_start - startAt, match_len]
+  [found, match_start - startAt, match_len]
 end
 
 def all_matches s, re
