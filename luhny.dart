@@ -17,13 +17,13 @@ testIt(a, startAt, maxLen) {
   return total % 10 == 0;
 }
 
-iterate(a) {
+iterate(a, startAt) {
   var len = a.length;
   var result = false;
   var matchStart = 0;
   var matchLen = 0;
-  if (len >= 14) {
-    var n = 0;
+  if (len - startAt >= 14) {
+    var n = startAt;
     var maxLen = len > 16 ? 16 : len;
     while (n + maxLen - 1 < len) {
       result = testIt(a, n, maxLen);
@@ -54,7 +54,7 @@ iterate(a) {
       }
     }
   }
-  return [result, matchStart, matchLen];
+  return [result, matchStart - startAt, matchLen];
 }
 
 mask(s) {
@@ -68,11 +68,9 @@ mask(s) {
     var mdIndex = 0;
     var matchFrom = 0;
     var mi = 0;
-    var keyDigits = null;
     var broadDigits = map(scan(md[0], reDigit), (v) => Math.parseInt(v));
     while (true) {
-      keyDigits = mi == 0 ? broadDigits : broadDigits.getRange(mi, broadDigits.length - mi);
-      var iterateResult = iterate(keyDigits);
+      var iterateResult = iterate(broadDigits, mi);
       var found = iterateResult[0];
       if (found) {
         var matchStart = iterateResult[1];
