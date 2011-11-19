@@ -1,4 +1,3 @@
-#!/usr/bin/env dart_release
 
 #library('luhn');
 #import('util.dart');
@@ -6,13 +5,10 @@
 class Luhn {
 
   final DOUBLE_DIGITS = const [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
-  var C_0;
-  var C_9;
+  final C_0;
+  final C_9;
   
-  Luhn() {
-    C_0 = '0'.charCodeAt(0);
-    C_9 = '9'.charCodeAt(0);     
-  }
+  Luhn() : C_0 = '0'.charCodeAt(0), C_9 = '9'.charCodeAt(0);
 
   testIt(a, startAt, maxLen) {
     var total = 0;
