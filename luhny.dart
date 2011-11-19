@@ -7,10 +7,10 @@ final DIGITS = const {
   '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
   '5': 5, '6': 6, '7': 7, '8': 8, '9': 9};
 
-testIt(a) {
+testIt(a, startAt, maxLen) {
   var total = 0;
   var doubleDigit = false;
-  for (var i = a.length - 1; i >= 0; i--) {
+  for (var i = startAt + maxLen - 1; i >= startAt; i--) {
     total += doubleDigit ? DOUBLE_DIGITS[a[i]] : a[i];
     doubleDigit = !doubleDigit;
   }
@@ -26,14 +26,14 @@ iterate(a) {
     var n = 0;
     var maxLen = len > 16 ? 16 : len;
     while (n + maxLen - 1 < len) {
-      result = testIt(a.getRange(n, maxLen));
+      result = testIt(a, n, maxLen);
       if (result) {
         matchStart = n;
         matchLen = maxLen;
         break;
       }
       if (maxLen == 16) {
-        result = testIt(a.getRange(n, 15));
+        result = testIt(a, n, 15);
         if (result) {
           matchStart = n;
           matchLen = 15;
@@ -41,7 +41,7 @@ iterate(a) {
         }
       }
       if (maxLen == 16 || maxLen == 15) {
-        result = testIt(a.getRange(n, 14));
+        result = testIt(a, n, 14);
         if (result) {
           matchStart = n;
           matchLen = 14;
