@@ -35,7 +35,9 @@ class Luhn
         digit_count += 1
         digits << c.to_i
         if digit_count >= 14
-          14.upto(digit_count > 16 ? 16 : digit_count) do |the_len|
+          max_len = digit_count > 16 ? 16 : digit_count
+          the_len = 14
+          while the_len <= max_len
             start_at = digit_count - 14
             if the_len >= 16
               start_at -= 2
@@ -55,6 +57,7 @@ class Luhn
               end
               mask_offset = i
             end
+            the_len += 1
           end
         end
         match_from += 1 if digit_count >= 16
