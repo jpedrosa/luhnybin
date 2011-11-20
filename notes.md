@@ -1,4 +1,19 @@
 
+Even more goodness! After just 3 lines of code change by adding a mask_offset barrier to avoid some repetition, the Ruby version improved 3 fold in performance to join the Dart version at the top of the hill:
+
+    $ time ./luhny.dart 100 < sample.txt > /dev/null 
+
+    real	0m1.497s
+    user	0m1.472s
+    sys 	0m0.028s
+
+    $ time ./luhny.rb 100 < sample.txt > /dev/null 
+
+    real	0m1.725s
+    user	0m1.720s
+    sys 	0m0.004s
+
+
 Woot! After removing the dependency on RegExp, both Ruby and Dart enjoyed further speedups. Only Dart is way ahead now:
 
     $ time ./luhny.dart 100 < sample.txt > /dev/null 
