@@ -1,3 +1,26 @@
+
+Woot! After removing the dependency on RegExp, both Ruby and Dart enjoyed further speedups. Only Dart is way ahead now:
+
+    $ time ./luhny.dart 100 < sample.txt > /dev/null 
+
+    real	0m1.575s
+    user	0m1.564s
+    sys 	0m0.012s
+
+    $ time ./luhny.rb 100 < sample.txt > /dev/null 
+
+    real	0m5.926s
+    user	0m5.920s
+    sys 	0m0.004s
+
+On the plus side, removing the dependency on RegExp helped to alleviate the complexity of the code. The code is more conventional now, making it prettier? :-)
+
+====
+
+**Outdated** 
+
+Kept for reference.
+
 Working on these programs has been rather fun. 
 
 While Dart is pretty new, I've grown fond of it as well.
