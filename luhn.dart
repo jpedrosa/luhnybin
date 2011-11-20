@@ -23,11 +23,11 @@ class Luhn {
   String mask(s) {
     var masked = null;
     var i = 0;
-    var digit_count = 0;
-    var digit_offset = 0;
+    var digitCount = 0;
+    var digitOffset = 0;
     var digits = [];
-    var match_from = -1;
-    var max_len = 0;
+    var matchFrom = -1;
+    var maxLen = 0;
     var len = s.length;
     var c = '';
     var cc = 0;
@@ -35,16 +35,16 @@ class Luhn {
       c = s[i];
       cc = c.charCodeAt(0);
       if (cc >= C_0 && cc <= C_9) {
-        if (match_from < 0) { match_from = i; }
-        digit_count += 1;
+        if (matchFrom < 0) { matchFrom = i; }
+        digitCount += 1;
         digits.add(Math.parseInt(c));
-        max_len = digit_count - digit_offset;
-        if (max_len >= 14) {
-          var found = testIt(digits, digit_offset, max_len);
+        maxLen = digitCount - digitOffset;
+        if (maxLen >= 14) {
+          var found = testIt(digits, digitOffset, maxLen);
           if (found) {
             if (masked === null) { masked = s.splitChars(); }
             var j = i;
-            while (j >= match_from) {
+            while (j >= matchFrom) {
               var mc = s.charCodeAt(j);
               if (mc >= C_0 && mc <= C_9) {
                 masked[j] = 'X';
@@ -53,18 +53,18 @@ class Luhn {
             }
           }
         }
-        if (max_len >= 16) {
-          digit_offset += 1;
-          match_from += 1;
+        if (maxLen >= 16) {
+          digitOffset += 1;
+          matchFrom += 1;
         }
       } else if (c == '-' || c == ' ') {
         // Keep going.
       } else {
-        if (digit_count > 0) {
-          digit_count = 0;
+        if (digitCount > 0) {
+          digitCount = 0;
           digits = [];
-          match_from = -1;
-          digit_offset = 0;
+          matchFrom = -1;
+          digitOffset = 0;
         }
       }
       i += 1;
