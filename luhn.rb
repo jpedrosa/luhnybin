@@ -26,6 +26,7 @@ class Luhn
     match_from = -1
     max_len = 0
     len = s.length
+    mask_offset = -1
     c = ''
     while i < len
       c = s[i]
@@ -40,13 +41,14 @@ class Luhn
           if found
             masked = s[0..-1] if not masked
             j = i
-            while j >= match_from
+            while j >= match_from && j > mask_offset
               case s[j]
               when '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
                 masked[j] = 'X'
               end
               j -= 1
             end
+            mask_offset = i
           end
         end
         if max_len >= 16

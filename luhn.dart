@@ -29,6 +29,7 @@ class Luhn {
     var matchFrom = -1;
     var maxLen = 0;
     var len = s.length;
+    var mask_offset = -1;
     var c = '';
     var cc = 0;
     while (i < len) {
@@ -44,13 +45,14 @@ class Luhn {
           if (found) {
             if (masked === null) { masked = s.splitChars(); }
             var j = i;
-            while (j >= matchFrom) {
+            while (j >= matchFrom && j > mask_offset) {
               var mc = s.charCodeAt(j);
               if (mc >= C_0 && mc <= C_9) {
                 masked[j] = 'X';
               }
               j -= 1;
             }
+            mask_offset = i;
           }
         }
         if (maxLen >= 16) {
