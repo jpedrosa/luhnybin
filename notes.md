@@ -1,5 +1,5 @@
 
-Turns out those numbers weren't realistic as a bug prevented the algorithm of doing all of its work. Then again, the current numbers still help both Ruby and Dart.
+Turns out those numbers weren't realistic as a bug prevented the algorithm from doing all of its work. Then again, the current numbers still help both Ruby and Dart.
 
     $ time ./luhny.dart 100 < sample.txt > /dev/null 
 
