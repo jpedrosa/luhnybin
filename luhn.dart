@@ -20,99 +20,54 @@ class Luhn {
     return total % 10 == 0;
   }
 
-  List iterate(List a, num startAt) {
-    var len = a.length;
-    var found = false;
-    var matchStart = 0;
-    var matchLen = 0;
-    var maxLen = len - startAt;
-    if (maxLen >= 14) {
-      var n = startAt;
-      maxLen = maxLen > 16 ? 16 : maxLen;
-      while (n + maxLen - 1 < len) {
-        found = testIt(a, n, maxLen);
-        if (found) {
-          matchStart = n;
-          matchLen = maxLen;
-          break;
-        }
-        if (maxLen == 16) {
-          found = testIt(a, n, 15);
-          if (found) {
-            matchStart = n;
-            matchLen = 15;
-            break;
-          }
-        }
-        if (maxLen != 14) {
-          found = testIt(a, n, 14);
-          if (found) {
-            matchStart = n;
-            matchLen = 14;
-            break;
-          }
-        }
-        n += 1;
-        if (maxLen > 14 && n + maxLen >= len) {
-          maxLen -= 1;
-        }
-      }
-    }
-    return [found, matchStart - startAt, matchLen];
-  }
-
-  String mask(String s) {
+  String mask(s) {
     var masked = null;
-    var re = Helpers.regexp(@'\d[\d\s-]+\d');
-    var broadMatches = s.length > 0 ? re.allMatches(s) : [];
-    var numBroadMatches = broadMatches.length;
-    if (numBroadMatches > 0) {
-      var reDigit = Helpers.regexp(@'\d');
-      var md = broadMatches[0];
-      var mdStartAt = md.start();
-      var mdIndex = 0;
-      var matchFrom = 0;
-      var mi = 0;
-      var broadDigits = map(scan(md[0], reDigit), (v) => Math.parseInt(v));
-      while (true) {
-        var iterateResult = iterate(broadDigits, mi);
-        var found = iterateResult[0];
-        if (found) {
-          var matchStart = iterateResult[1];
-          var matchLen = iterateResult[2];
-          mi += matchStart + 1;
-          var n = matchFrom + mdStartAt;
-          if (masked === null) { masked = s.splitChars(); }
-          while (matchStart > 0) {
-            var c = s.charCodeAt(n);
-            if (c >= C_0 && c <= C_9) { matchStart -= 1; }
-            n += 1;
-          }
-          matchFrom = -1;
-          while (matchLen > 0) {
-            var c = s.charCodeAt(n);
-            if (c >= C_0 && c <= C_9) {
-              if (matchFrom < 0) {
-                matchFrom = n - mdStartAt + 1;
+    var i = 0;
+    var digit_count = 0;
+    var digit_offset = 0;
+    var digits = [];
+    var match_from = -1;
+    var max_len = 0;
+    var len = s.length;
+    var c = '';
+    var cc = 0;
+    while (i < len) {
+      c = s[i];
+      cc = c.charCodeAt(0);
+      if (cc >= C_0 && cc <= C_9) {
+        if (match_from < 0) { match_from = i; }
+        digit_count += 1;
+        digits.add(Math.parseInt(c));
+        max_len = digit_count - digit_offset;
+        if (max_len >= 14) {
+          var found = testIt(digits, digit_offset, max_len);
+          if (found) {
+            if (masked === null) { masked = s.splitChars(); }
+            var j = i;
+            while (j >= match_from) {
+              var mc = s.charCodeAt(j);
+              if (mc >= C_0 && mc <= C_9) {
+                masked[j] = 'X';
               }
-              masked[n] = 'X';
-              matchLen -= 1;
+              j -= 1;
             }
-            n += 1;
-          }
-        } else {
-          mdIndex += 1;
-          if (mdIndex < numBroadMatches) {
-            matchFrom = 0;
-            mi = 0;
-            md = broadMatches[mdIndex];
-            mdStartAt = md.start();
-            broadDigits = map(scan(md[0], reDigit), (v) => Math.parseInt(v));
-          } else {
-            break;
           }
         }
+        if (max_len >= 16) {
+          digit_offset += 1;
+          match_from += 1;
+        }
+      } else if (c == '-' || c == ' ') {
+        // Keep going.
+      } else {
+        if (digit_count > 0) {
+          digit_count = 0;
+          digits = [];
+          match_from = -1;
+          digit_offset = 0;
+        }
       }
+      i += 1;
     }
     return masked !== null ? Strings.concatAll(masked) : s;
   }
