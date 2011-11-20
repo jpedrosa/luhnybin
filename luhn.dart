@@ -20,7 +20,7 @@ class Luhn {
     return total % 10 == 0;
   }
 
-  String mask(s) {
+  String mask(String s) {
     var masked = null;
     var i = 0;
     var digitCount = 0;
