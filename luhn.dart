@@ -24,12 +24,10 @@ class Luhn {
     var masked = null;
     var i = 0;
     var digitCount = 0;
-    var digitOffset = 0;
     var digits = [];
     var matchFrom = -1;
-    var maxLen = 0;
     var len = s.length;
-    var mask_offset = -1;
+    var maskOffset = -1;
     var c = '';
     var cc = 0;
     while (i < len) {
@@ -39,26 +37,30 @@ class Luhn {
         if (matchFrom < 0) { matchFrom = i; }
         digitCount += 1;
         digits.add(Math.parseInt(c));
-        maxLen = digitCount - digitOffset;
-        if (maxLen >= 14) {
-          var found = testIt(digits, digitOffset, maxLen);
-          if (found) {
-            if (masked === null) { masked = s.splitChars(); }
-            var j = i;
-            while (j >= matchFrom && j > mask_offset) {
-              var mc = s.charCodeAt(j);
-              if (mc >= C_0 && mc <= C_9) {
-                masked[j] = 'X';
-              }
-              j -= 1;
+        if (digitCount >= 14) {
+          for (var theLen = 14; theLen <= 16 && theLen <= digitCount; theLen++) {
+            var startAt = digitCount - 14;
+            if (theLen >= 16) {
+              startAt -= 2;
+            } else if (theLen >= 15) {
+              startAt -= 1;
             }
-            mask_offset = i;
+            var found = testIt(digits, startAt, theLen);
+            if (found) {
+              if (masked === null) { masked = s.splitChars(); }
+              var j = i;
+              while (j >= matchFrom && j > maskOffset) {
+                var mc = s.charCodeAt(j);
+                if (mc >= C_0 && mc <= C_9) {
+                  masked[j] = 'X';
+                }
+                j -= 1;
+              }
+              maskOffset = i;
+            }
           }
         }
-        if (maxLen >= 16) {
-          digitOffset += 1;
-          matchFrom += 1;
-        }
+        if (digitCount >= 16) { matchFrom += 1; }
       } else if (c == '-' || c == ' ') {
         // Keep going.
       } else {
@@ -66,7 +68,6 @@ class Luhn {
           digitCount = 0;
           digits = [];
           matchFrom = -1;
-          digitOffset = 0;
         }
       }
       i += 1;
