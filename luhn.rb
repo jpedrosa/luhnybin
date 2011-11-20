@@ -21,7 +21,6 @@ class Luhn
     masked = nil
     i = 0
     digit_count = 0
-    digit_offset = 0
     digits = []
     match_from = -1
     max_len = 0
@@ -35,26 +34,30 @@ class Luhn
         match_from = i if match_from < 0
         digit_count += 1
         digits << c.to_i
-        max_len = digit_count - digit_offset
-        if max_len >= 14
-          found = test_it(digits, digit_offset, max_len)
-          if found
-            masked = s[0..-1] if not masked
-            j = i
-            while j >= match_from && j > mask_offset
-              case s[j]
-              when '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-                masked[j] = 'X'
-              end
-              j -= 1
+        if digit_count >= 14
+          14.upto(digit_count > 16 ? 16 : digit_count) do |the_len|
+            start_at = digit_count - 14
+            if the_len >= 16
+              start_at -= 2
+            elsif the_len >= 15
+              start_at -= 1
             end
-            mask_offset = i
+            found = test_it(digits, start_at, the_len)
+            if found
+              masked = s[0..-1] if not masked
+              j = i
+              while j >= match_from && j > mask_offset
+                case s[j]
+                when '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+                  masked[j] = 'X'
+                end
+                j -= 1
+              end
+              mask_offset = i
+            end
           end
         end
-        if max_len >= 16
-          digit_offset += 1
-          match_from += 1 
-        end
+        match_from += 1 if digit_count >= 16
       when '-', ' '
         # Keep going.
       else
@@ -62,7 +65,6 @@ class Luhn
           digit_count = 0
           digits = []
           match_from = -1
-          digit_offset = 0
         end
       end
       i += 1
