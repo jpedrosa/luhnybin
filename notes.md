@@ -1,4 +1,22 @@
 
+Turns out those numbers weren't realistic as a bug prevented the algorithm of doing all of its work. Then again, the current numbers still help both Ruby and Dart.
+
+    $ time ./luhny.dart 100 < sample.txt > /dev/null 
+
+    real	0m1.779s
+    user	0m1.736s
+    sys 	0m0.044s
+
+    $ time ./luhny.rb 100 < sample.txt > /dev/null 
+
+    real	0m3.915s
+    user	0m3.904s
+    sys 	0m0.008s
+
+===========
+
+**These numbers without the RegExp dependency may have failed to a bug.** Let's keep them around as "what if?" :-)
+
 Even more goodness! After just 3 lines of code change by adding a mask_offset barrier to avoid some repetition, the Ruby version improved 3 fold in performance to join the Dart version at the top of the hill:
 
     $ time ./luhny.dart 100 < sample.txt > /dev/null 
