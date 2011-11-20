@@ -44,8 +44,7 @@ class Luhn
             elsif the_len >= 15
               start_at -= 1
             end
-            found = test_it(digits, start_at, the_len)
-            if found
+            if test_it(digits, start_at, the_len)
               masked = s[0..-1] if not masked
               j = i
               while j >= match_from && j > mask_offset

@@ -45,8 +45,7 @@ class Luhn {
             } else if (theLen >= 15) {
               startAt -= 1;
             }
-            var found = testIt(digits, startAt, theLen);
-            if (found) {
+            if (testIt(digits, startAt, theLen)) {
               if (masked === null) { masked = s.splitChars(); }
               var j = i;
               while (j >= matchFrom && j > maskOffset) {
