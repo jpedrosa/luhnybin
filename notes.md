@@ -1,4 +1,22 @@
 
+After a recent update of the tests, a failure in the algorithm was revealed so I had to remove the code that was saving some work during the masking. The Ruby version has suffered the most with it, while the Dart version has kept its superb performance:
+
+    $ time ./luhny.dart 100 < sample.txt > /dev/null 
+
+    real	0m1.975s
+    user	0m1.940s
+    sys 	0m0.024s
+
+    $ time ./luhny.rb 100 < sample.txt > /dev/null 
+
+    real	0m12.502s
+    user	0m12.493s
+    sys 	0m0.008s
+
+Now to think of ways to improve the Ruby version. :-)
+
+===========
+
 Turns out those numbers weren't realistic as a bug prevented the algorithm from doing all of its work. Then again, the current numbers still help both Ruby and Dart.
 
     $ time ./luhny.dart 100 < sample.txt > /dev/null 
