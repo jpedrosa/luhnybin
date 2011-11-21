@@ -1,4 +1,16 @@
 
+Felt enticed to create a version based on the Go programming language. As this is my first Go program it certainly hasn't been optimized enough yet, for one thing. :-) 
+
+    $ time ./goluhny 100 < sample.txt > /dev/null 
+
+    real	0m0.250s
+    user	0m0.244s
+    sys 	0m0.004s
+
+It's interesting that even though the Go program starts instantaneously, when we make the benchmark to last longer than a very brief moment the slower to start languages have time to catch up, as is the case of the Dart implementation.
+
+=========
+
 Who would have guessed it? After taking the lead of the Ruby version and using more char codes, the Dart version is even faster now:
 
     $ time ./luhny.dart 100 < sample.txt > /dev/null 
