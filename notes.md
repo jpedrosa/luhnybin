@@ -1,6 +1,6 @@
 
 
-I've always wanted to keep the other Ruby implementation based on RegExp around even though its code wasn't as pretty. It did work though. After the recent change I had to take a look at it again, so I ressurected it and made a file for it (luhn_regex.rb). It performs like this:
+I've always wanted to keep the other Ruby implementation based on RegExp around even though its code wasn't as pretty. It did work though. After the recent change I had to take a look at it again, so I resurrected it and made a file for it (luhn_regex.rb). It performs like this:
 
     $ time ./luhny.rb 100 < sample.txt > /dev/null 
 
