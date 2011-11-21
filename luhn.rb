@@ -49,7 +49,7 @@ class Luhn
             the_len -= 1
           end
         end
-      elsif c != 45 and c != 32
+      elsif c != 45 and c != 32 #not - or space
         if digit_count > 0
           digit_count = 0
           digits = []

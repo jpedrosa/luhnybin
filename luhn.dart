@@ -5,10 +5,6 @@
 class Luhn {
 
   final DOUBLE_DIGITS = const [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
-  final C_0;
-  final C_9;
-  
-  Luhn() : C_0 = '0'.charCodeAt(0), C_9 = '9'.charCodeAt(0);
 
   bool testIt(List a, num startAt, num maxLen) {
     var total = 0;
@@ -27,11 +23,10 @@ class Luhn {
     var digits = [];
     var len = s.length;
     while (i < len) {
-      var c = s[i];
-      var cc = c.charCodeAt(0);
-      if (cc >= C_0 && cc <= C_9) {
+      var c = s[i].charCodeAt(0);
+      if (c >= 48 && c <= 57) { //between 0 and 9
         digitCount += 1;
-        digits.add(Math.parseInt(c));
+        digits.add(c - 48);
         if (digitCount >= 14) {
           for (var theLen = digitCount < 16 ? digitCount : 16; theLen >= 14; theLen--) {
             var startAt = digitCount - theLen;
@@ -41,7 +36,7 @@ class Luhn {
               var maskLen = theLen;
               while (maskLen > 0) {
                 var mc = s.charCodeAt(j);
-                if (mc >= C_0 && mc <= C_9) {
+                if (mc >= 48 && mc <= 57) { //between 0 and 9
                   masked[j] = 'X';
                   maskLen -= 1;
                 }
@@ -50,9 +45,7 @@ class Luhn {
             }
           }
         }
-      } else if (c == '-' || c == ' ') {
-        // Keep going.
-      } else {
+      } else if (c != 45 && c != 32) { //not - or space
         if (digitCount > 0) {
           digitCount = 0;
           digits = [];
