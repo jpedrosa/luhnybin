@@ -1,4 +1,14 @@
 
+Who would have guessed it? After taking the lead of the Ruby version and using more char codes, the Dart version is even faster now:
+
+    $ time ./luhny.dart 100 < sample.txt > /dev/null 
+
+    real	0m1.037s
+    user	0m1.020s
+    sys 	0m0.016s
+
+=========
+
 Success! Tweaked the main Ruby version, the one without the RegExp, to use arrays of chars. It became fast enough as a result:
 
     $ time ./luhny.rb 100 < sample.txt > /dev/null 
