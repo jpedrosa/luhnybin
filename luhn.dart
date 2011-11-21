@@ -57,16 +57,22 @@ class Luhn {
   }
 
   void tapStdin() {
-    var s;
+    var s = "";
     var ios = new StringInputStream(stdin);
-    var lines = [];
-    while ((s = ios.readLine()) !== null) {
-      lines.add(s);
-    }
     var args = new Options().arguments;
     var nRepeats = args.length > 0 ? Math.parseInt(args[0]) : 1;
-    for (var i = 0; i < nRepeats; i++) {
-      for (s in lines) {
+    if (nRepeats > 1) {
+      var lines = [];
+      while ((s = ios.readLine()) !== null) {
+        lines.add(s);
+      }
+      for (var i = 0; i < nRepeats; i++) {
+        for (s in lines) {
+          print(mask(s));
+        }
+      }
+    } else {
+      while ((s = ios.readLine()) !== null) {
         print(mask(s));
       }
     }

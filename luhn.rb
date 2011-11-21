@@ -62,9 +62,15 @@ class Luhn
 
   def tap_stdin
     n_repeats = ARGV[0] ? ARGV[0].to_i : 1
-    lines = STDIN.readlines
-    n_repeats.times do
-      lines.each do |s|
+    if n_repeats > 1
+      lines = STDIN.readlines
+      n_repeats.times do
+        lines.each do |s|
+          puts mask(s)
+        end
+      end
+    else
+      STDIN.each do |s|
         puts mask(s)
       end
     end
