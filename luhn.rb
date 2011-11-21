@@ -18,29 +18,29 @@ class Luhn
   end
 
   def mask s
+    mirror = s.unpack('c*')
     masked = nil
     i = 0
     digit_count = 0
     digits = []
     len = s.length
     while i < len
-      c = s[i]
-      case c
-      when '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+      c = mirror[i]
+      if c >= 48 and c <= 57 #between 0 and 9
         digit_count += 1
-        digits << c.to_i
+        digits << c - 48
         if digit_count >= 14
           the_len = digit_count < 16 ? digit_count : 16
           while the_len >= 14
             start_at = digit_count - the_len
             if test_it(digits, start_at, the_len)
-              masked = s[0..-1] if not masked
+              masked = mirror[0..-1] if not masked
               mask_len = the_len
               j = i
               while mask_len > 0
-                case s[j]
-                when '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-                  masked[j] = 'X'
+                mc = mirror[j]
+                if mc >= 48 and mc <= 57 #between 0 and 9
+                  masked[j] = 88 #X
                   mask_len -= 1
                 end
                 j -= 1
@@ -49,9 +49,7 @@ class Luhn
             the_len -= 1
           end
         end
-      when '-', ' '
-        # Keep going.
-      else
+      elsif c != 45 and c != 32
         if digit_count > 0
           digit_count = 0
           digits = []
@@ -59,7 +57,7 @@ class Luhn
       end
       i += 1
     end
-    masked || s
+    masked ? masked.pack('c*') : s
   end
 
   def tap_stdin

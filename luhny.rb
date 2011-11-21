@@ -2,14 +2,14 @@
 
 $LOAD_PATH << File.dirname(__FILE__)
 
-#require 'luhn'
-require 'luhn_regex'
+require 'luhn'
+#require 'luhn_regex'
 
 
 def sample_test
-  [ #'56613959932537',
+  [ '56613959932537',
 #    '508733740140655',
-    '6853371389452376',
+#    '6853371389452376',
 #    '49536290423965',
 #    '306903975081421',
 #    '6045055735309820',
