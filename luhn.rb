@@ -22,16 +22,13 @@ class Luhn
     i = 0
     digit_count = 0
     digits = []
-    match_from = -1
     max_len = 0
     len = s.length
-    mask_offset = -1
     c = ''
     while i < len
       c = s[i]
       case c
       when '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-        match_from = i if match_from < 0
         digit_count += 1
         digits << c.to_i
         if digit_count >= 14
@@ -46,27 +43,26 @@ class Luhn
             end
             if test_it(digits, start_at, the_len)
               masked = s[0..-1] if not masked
+              mask_len = the_len
               j = i
-              while j >= match_from && j > mask_offset
+              while mask_len > 0
                 case s[j]
                 when '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
                   masked[j] = 'X'
+                  mask_len -= 1
                 end
                 j -= 1
               end
-              mask_offset = i
             end
             the_len += 1
           end
         end
-        match_from += 1 if digit_count >= 16
       when '-', ' '
         # Keep going.
       else
         if digit_count > 0
           digit_count = 0
           digits = []
-          match_from = -1
         end
       end
       i += 1
