@@ -1,4 +1,17 @@
 
+
+I've always wanted to keep the other Ruby implementation based on RegExp around even though its code wasn't as pretty. It did work though. After the recent change I had to take a look at it again, so I ressurected it and made a file for it (luhn_regex.rb). It performs like this:
+
+    $ time ./luhny.rb 100 < sample.txt > /dev/null 
+
+    real	0m7.036s
+    user	0m6.976s
+    sys 	0m0.012s
+
+While still passing the newest tests.
+
+=========
+
 After a recent update of the tests, a failure in the algorithm was revealed so I had to remove the code that was saving some work during the masking. The Ruby version has suffered the most with it, while the Dart version has kept its superb performance:
 
     $ time ./luhny.dart 100 < sample.txt > /dev/null 
