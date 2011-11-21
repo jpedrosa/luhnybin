@@ -2,7 +2,8 @@
 
 $LOAD_PATH << File.dirname(__FILE__)
 
-require 'luhn'
+#require 'luhn'
+require 'luhn_regex'
 
 
 def sample_test
