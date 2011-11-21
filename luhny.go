@@ -117,15 +117,15 @@ func tapStdin() {
   nRepeats := 1
   if len(os.Args) > 1 { nRepeats, _ = strconv.Atoi(os.Args[1]) }
   ios := bufio.NewReader(os.Stdin)
-  s, _, err := ios.ReadLine()
+  s, err := ios.ReadBytes('\n')
   lines := []string{}
   for err == nil {
     lines = append(lines, string(s))
-    s, _, err = ios.ReadLine()
+    s, err = ios.ReadBytes('\n')
   }
   for i := 0; i < nRepeats; i++ {
     for _, s := range lines {
-      fmt.Println(mask(s))
+      fmt.Print(mask(s))
     }
   }
 }
