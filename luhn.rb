@@ -22,9 +22,7 @@ class Luhn
     i = 0
     digit_count = 0
     digits = []
-    max_len = 0
     len = s.length
-    c = ''
     while i < len
       c = s[i]
       case c
@@ -32,15 +30,9 @@ class Luhn
         digit_count += 1
         digits << c.to_i
         if digit_count >= 14
-          max_len = digit_count > 16 ? 16 : digit_count
-          the_len = 14
-          while the_len <= max_len
-            start_at = digit_count - 14
-            if the_len >= 16
-              start_at -= 2
-            elsif the_len >= 15
-              start_at -= 1
-            end
+          the_len = digit_count < 16 ? digit_count : 16
+          while the_len >= 14
+            start_at = digit_count - the_len
             if test_it(digits, start_at, the_len)
               masked = s[0..-1] if not masked
               mask_len = the_len
@@ -54,7 +46,7 @@ class Luhn
                 j -= 1
               end
             end
-            the_len += 1
+            the_len -= 1
           end
         end
       when '-', ' '
