@@ -1,4 +1,15 @@
 
+Success! Tweaked the main Ruby version, the one without the RegExp, to use arrays of chars. It became fast enough as a result:
+
+    $ time ./luhny.rb 100 < sample.txt > /dev/null 
+
+    real	0m4.644s
+    user	0m4.632s
+    sys 	0m0.008s
+
+Credit goes to some other guy who had first used the "unpack" and "pack" methods.
+
+=========
 
 I've always wanted to keep the other Ruby implementation based on RegExp around even though its code wasn't as pretty. It did work though. After the recent change I had to take a look at it again, so I resurrected it and made a file for it (luhn_regex.rb). It performs like this:
 
