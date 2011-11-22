@@ -22,6 +22,7 @@ class Luhn
     masked = nil
     i = 0
     digit_count = 0
+    mask_offset = -1
     digits = []
     len = s.length
     while i < len
@@ -37,7 +38,7 @@ class Luhn
               masked = mirror[0..-1] if not masked
               mask_len = the_len
               j = i
-              while mask_len > 0
+              while mask_len > 0 && j > mask_offset
                 mc = mirror[j]
                 if mc >= 48 and mc <= 57 #between 0 and 9
                   masked[j] = 88 #X
@@ -45,6 +46,7 @@ class Luhn
                 end
                 j -= 1
               end
+              mask_offset = i if the_len == 16
             end
             the_len -= 1
           end

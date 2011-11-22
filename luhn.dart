@@ -20,6 +20,7 @@ class Luhn {
     var masked = null;
     var i = 0;
     var digitCount = 0;
+    var maskOffset = -1;
     var digits = [];
     var len = s.length;
     while (i < len) {
@@ -34,7 +35,7 @@ class Luhn {
               if (masked === null) { masked = s.splitChars(); }
               var j = i;
               var maskLen = theLen;
-              while (maskLen > 0) {
+              while (maskLen > 0 && j > maskOffset) {
                 var mc = s.charCodeAt(j);
                 if (mc >= 48 && mc <= 57) { //between 0 and 9
                   masked[j] = 'X';
@@ -42,6 +43,7 @@ class Luhn {
                 }
                 j -= 1;
               }
+              if (theLen == 16) { maskOffset = i; }
             }
           }
         }

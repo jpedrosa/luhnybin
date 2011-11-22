@@ -51,6 +51,7 @@ func (lu Luhn) Mask(s string) string {
   var masked []byte
   i := 0
   digitCount := 0
+  maskOffset := -1
   digits := []byte{}
   len := len(s)
   for i < len {
@@ -66,7 +67,7 @@ func (lu Luhn) Mask(s string) string {
           if lu.TestIt(&digits, startAt, theLen) {
             if masked == nil { masked = []byte(s) }
             j := i
-            for maskLen := theLen; maskLen > 0; {
+            for maskLen := theLen; maskLen > 0 && j > maskOffset; {
               mc := s[j]
               if mc >= 48 && mc <= 57 { //between 0 and 9
                 masked[j] = 88 //'X'
@@ -74,6 +75,7 @@ func (lu Luhn) Mask(s string) string {
               }
               j -= 1
             }
+            if i == 16 { maskOffset = i }
           }
         }
       }
