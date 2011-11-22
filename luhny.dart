@@ -26,7 +26,7 @@ void sampleTest() {
   ];
   var luhn = new Luhn();
   for (var s in samples) {
-    print(luhn.mask(s));
+    print(new String.fromCharCodes(luhn.mask(s.charCodes())));
   }
 }
 

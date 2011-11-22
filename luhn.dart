@@ -16,15 +16,15 @@ class Luhn {
     return total % 10 == 0;
   }
 
-  String mask(String s) {
+  String mask(List charCodes) {
     var masked = null;
     var i = 0;
     var digitCount = 0;
     var maskOffset = -1;
     var digits = [];
-    var len = s.length;
+    var len = charCodes.length;
     while (i < len) {
-      var c = s[i].charCodeAt(0);
+      var c = charCodes[i];
       if (c >= 48 && c <= 57) { //between 0 and 9
         digitCount += 1;
         digits.add(c - 48);
@@ -32,13 +32,13 @@ class Luhn {
           for (var theLen = digitCount < 16 ? digitCount : 16; theLen >= 14; theLen--) {
             var startAt = digitCount - theLen;
             if (testIt(digits, startAt, theLen)) {
-              if (masked === null) { masked = s.splitChars(); }
+              if (masked === null) { masked = charCodes.getRange(0, len); }
               var j = i;
               var maskLen = theLen;
               while (maskLen > 0 && j > maskOffset) {
-                var mc = s.charCodeAt(j);
+                var mc = charCodes[j];
                 if (mc >= 48 && mc <= 57) { //between 0 and 9
-                  masked[j] = 'X';
+                  masked[j] = 88; //X
                   maskLen -= 1;
                 }
                 j -= 1;
@@ -55,7 +55,7 @@ class Luhn {
       }
       i += 1;
     }
-    return masked !== null ? Strings.concatAll(masked) : s;
+    return masked !== null ? masked : charCodes;
   }
 
   readRawLines(fn) {
@@ -68,10 +68,10 @@ class Luhn {
         if (a[i] == 10) { // Newline, \n.
           if (saved !== null) {
             saved.addAll(a.getRange(startAt, i - startAt));
-            fn(new String.fromCharCodes(saved));
+            fn(saved);
             saved = null;
           } else {
-            fn(new String.fromCharCodes(a.getRange(startAt, i - startAt)));
+            fn(a.getRange(startAt, i - startAt));
           }
           startAt = i + 1;
         }
@@ -79,7 +79,7 @@ class Luhn {
       if (startAt < len) { saved = a.getRange(startAt, len - startAt); }
     }
     if (saved !== null) {
-      fn(new String.fromCharCodes(saved.getRange(startAt, len - startAt)));
+      fn(saved.getRange(startAt, len - startAt));
     }
   }
 
@@ -92,16 +92,15 @@ class Luhn {
       readRawLines((s) => lines.add(s));
       for (var i = 0; i < nRepeats; i++) {
         for (s in lines) {
-          print(mask(s));
+          print(new String.fromCharCodes(mask(s)));
         }
       }
     } else {
-      readRawLines((s) => print(mask(s)));
+      readRawLines((s) => print(new String.fromCharCodes(mask(s))));
     }
     exit(0);
   }
 }
-
 
 
 
