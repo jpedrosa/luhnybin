@@ -58,25 +58,42 @@ class Luhn {
     return masked !== null ? Strings.concatAll(masked) : s;
   }
 
+  readRawLines(fn) {
+    var a;
+    var saved;
+    while ((a = stdin.read(16384)) !== null) {
+      var startAt = 0;
+      var len = a.length;
+      for (var i = 0; i < len; i++) {
+        if (a[i] == 10) { // Newline, \n.
+          if (saved !== null) {
+            saved.addAll(a.getRange(startAt, i - startAt));
+            fn(new String.fromCharCodes(saved));
+            saved = null;
+          } else {
+            fn(new String.fromCharCodes(a.getRange(startAt, i - startAt)));
+          }
+          startAt = i + 1;
+        }
+      }
+      if (startAt < len) { saved = a.getRange(startAt, len - startAt); }
+    }
+  }
+
   void tapStdin() {
     var s = "";
-    var ios = new StringInputStream(stdin);
     var args = new Options().arguments;
     var nRepeats = args.length > 0 ? Math.parseInt(args[0]) : 1;
     if (nRepeats > 1) {
       var lines = [];
-      while ((s = ios.readLine()) !== null) {
-        lines.add(s);
-      }
+      readRawLines((s) => lines.add(s));
       for (var i = 0; i < nRepeats; i++) {
         for (s in lines) {
           print(mask(s));
         }
       }
     } else {
-      while ((s = ios.readLine()) !== null) {
-        print(mask(s));
-      }
+      readRawLines((s) => print(mask(s)));
     }
     exit(0);
   }
