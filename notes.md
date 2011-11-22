@@ -1,4 +1,16 @@
 
+Having found I/O performance degradation when using the default StringInputStream for the Dart version, I've managed to skip using it in favor of a custom method. The numbers when using the mega_sample.txt file are these:
+
+    $ time ./luhny.dart < mega_sample.txt > /dev/null 
+
+    real	0m0.950s
+    user	0m0.928s
+    sys 	0m0.020s
+
+Less than the 2.1s of before.
+
+==========
+
 Enabled some mask offset again. I had disabled it to deal with a bug revealed by a test that had been recently added. I couldn't enable it again after fixing the bug because the bug was related to the mask offset. I had a new idea of making use of it only when the max length of 16 had been found for a legal number which happens to be the most common situation in the tests anyways. The numbers look good:
 
     $ time ./luhny.dart 100 < sample.txt > /dev/null 
