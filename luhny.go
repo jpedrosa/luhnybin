@@ -33,14 +33,14 @@ func NewLuhn() *Luhn {
   return &Luhn{}
 }
 
-func (Luhn) TestIt(a []byte, startAt int, maxLen int) bool {
+func (Luhn) TestIt(a *[]byte, startAt int, maxLen int) bool {
   total := uint8(0)
   doubleDigit := false
   for i := startAt + maxLen - 1; i >= startAt; i-- {
     if doubleDigit {
-      total += doubleDigits[a[i]]
+      total += doubleDigits[(*a)[i]]
     } else {
-      total += a[i]
+      total += (*a)[i]
     }
     doubleDigit = !doubleDigit
   }
@@ -63,7 +63,7 @@ func (lu Luhn) Mask(s string) string {
         if digitCount < 16 { theLen = digitCount }
         for ; theLen >= 14; theLen-- {
           startAt := digitCount - theLen
-          if lu.TestIt(digits, startAt, theLen) {
+          if lu.TestIt(&digits, startAt, theLen) {
             if masked == nil { masked = []byte(s) }
             j := i
             for maskLen := theLen; maskLen > 0; {
@@ -147,8 +147,7 @@ func (lu Luhn) TapStdin() {
 
 func main() {
 //  sampleTest()
-  luhn := NewLuhn()
-  luhn.TapStdin()
+  (NewLuhn()).TapStdin()
 }
 
 
