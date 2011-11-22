@@ -1,4 +1,20 @@
 
+Using even more char codes now in the Dart version has resulted in bigger performance gains:
+
+    $ time ./luhny.dart 100 < sample.txt > /dev/null 
+
+    real	0m0.617s
+    user	0m0.604s
+    sys 	0m0.008s
+
+    $ time ./luhny.dart < mega_sample.txt > /dev/null 
+
+    real	0m0.659s
+    user	0m0.648s
+    sys 	0m0.008s
+
+==========
+
 Having found I/O performance degradation when using the default StringInputStream for the Dart version, I've managed to skip using it in favor of a custom method. The numbers when using the mega_sample.txt file are these:
 
     $ time ./luhny.dart < mega_sample.txt > /dev/null 
