@@ -41,7 +41,7 @@ First, I noticed a slow down for the Dart version when using the mega_sample.txt
     user	0m0.240s
     sys 	0m0.004s
 
-Second, I had fun pitching somebody else's Java implementation agains my Go implementation. When I made the mega_sample.txt file 500 times the size of the sample.txt file, his Java implementation became noticeably faster by about 0.2s. That gave me extra incentive to try to optimize my Go version. Without clear gains I couldn't change the Go code just for the heck of it. I could approach his numbers with tweaks but I didn't commit all of that. Check it out:
+Second, I had fun pitching somebody else's Java implementation against my Go implementation. When I made the mega_sample.txt file 500 times the size of the sample.txt file, his Java implementation became noticeably faster by about 0.2s. That gave me extra incentive to try to optimize my Go version. Without clear gains I couldn't change the Go code just for the heck of it. I could approach his numbers with tweaks but I didn't commit all of that. Check it out:
 
     $ time ./goluhny < mega_sample.txt > /dev/null 
 
