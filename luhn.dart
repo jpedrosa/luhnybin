@@ -6,11 +6,11 @@ class Luhn {
 
   final DOUBLE_DIGITS = const [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
 
-  bool testIt(List<int> a, num startAt, num maxLen) {
+  bool testIt(List<int> digits, num startAt, num maxLen) {
     var total = 0;
     var doubleDigit = false;
     for (var i = startAt + maxLen - 1; i >= startAt; i--) {
-      total += doubleDigit ? DOUBLE_DIGITS[a[i]] : a[i];
+      total += doubleDigit ? DOUBLE_DIGITS[digits[i]] : digits[i];
       doubleDigit = !doubleDigit;
     }
     return total % 10 == 0;
@@ -59,8 +59,8 @@ class Luhn {
   }
 
   void readRawLines(fn) {
-    var a;
-    var saved;
+    var a = null;
+    var saved = null;
     while ((a = stdin.read(16384)) !== null) {
       var startAt = 0;
       var len = a.length;
