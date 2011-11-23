@@ -24,7 +24,7 @@ class Luhn
     digit_count = 0
     mask_offset = -1
     digits = []
-    len = s.length
+    len = mirror.length
     while i < len
       c = mirror[i]
       if c >= 48 and c <= 57 #between 0 and 9
