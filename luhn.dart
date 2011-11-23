@@ -6,7 +6,7 @@ class Luhn {
 
   final DOUBLE_DIGITS = const [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
 
-  bool testIt(List a, num startAt, num maxLen) {
+  bool testIt(List<int> a, num startAt, num maxLen) {
     var total = 0;
     var doubleDigit = false;
     for (var i = startAt + maxLen - 1; i >= startAt; i--) {
@@ -16,7 +16,7 @@ class Luhn {
     return total % 10 == 0;
   }
 
-  String mask(List charCodes) {
+  List<int> mask(List<int> charCodes) {
     var masked = null;
     var i = 0;
     var digitCount = 0;
@@ -58,7 +58,7 @@ class Luhn {
     return masked !== null ? masked : charCodes;
   }
 
-  readRawLines(fn) {
+  void readRawLines(fn) {
     var a;
     var saved;
     while ((a = stdin.read(16384)) !== null) {
