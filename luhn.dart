@@ -96,7 +96,8 @@ class Luhn {
         }
       }
     } else {
-      readRawLines((s) => print(new String.fromCharCodes(mask(s))));
+      var a;
+      readRawLines((a) => print(new String.fromCharCodes(mask(a))));
     }
     exit(0);
   }
