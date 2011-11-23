@@ -88,10 +88,10 @@ class Luhn {
     var nRepeats = args.length > 0 ? Math.parseInt(args[0]) : 1;
     if (nRepeats > 1) {
       var lines = [];
-      readRawLines((s) => lines.add(s));
+      readRawLines((a) => lines.add(a));
       for (var i = 0; i < nRepeats; i++) {
-        for (var s in lines) {
-          print(new String.fromCharCodes(mask(s)));
+        for (var a in lines) {
+          print(new String.fromCharCodes(mask(a)));
         }
       }
     } else {
