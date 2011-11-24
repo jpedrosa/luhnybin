@@ -78,9 +78,7 @@ class Luhn {
       }
       if (startAt < len) { saved = a.getRange(startAt, len - startAt); }
     }
-    if (saved !== null) {
-      fn(saved.getRange(startAt, len - startAt));
-    }
+    if (saved !== null) { fn(saved); }
   }
 
   void tapStdin() {
