@@ -125,26 +125,28 @@ func sampleTest() {
 func (lu Luhn) TapStdin() {
   nRepeats := 1
   if len(os.Args) > 1 { nRepeats, _ = strconv.Atoi(os.Args[1]) }
-  ios := bufio.NewReader(os.Stdin)
+  ios, _ := bufio.NewReaderSize(os.Stdin, 16384)
+  bw, _ := bufio.NewWriterSize(os.Stdout, 16384)
   if nRepeats > 1 {
-    s, err := ios.ReadBytes('\n')
+    s, err := ios.ReadSlice('\n')
     lines := []string{}
     for err == nil {
       lines = append(lines, string(s))
-      s, err = ios.ReadBytes('\n')
+      s, err = ios.ReadSlice('\n')
     }
     for i := 0; i < nRepeats; i++ {
       for _, s := range lines {
-        fmt.Print(lu.Mask(s))
+        bw.WriteString(lu.Mask(s))
       }
     }
   } else {
-    s, err := ios.ReadBytes('\n')
+    s, err := ios.ReadSlice('\n')
     for err == nil {
-      fmt.Print(lu.Mask(string(s)))
-      s, err = ios.ReadBytes('\n')
+      bw.WriteString(lu.Mask(string(s)))
+      s, err = ios.ReadSlice('\n')
     }
   }
+  bw.Flush()
 }
 
 func main() {
